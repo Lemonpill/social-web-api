@@ -1,2 +1,2 @@
-# social-web-api
-SocialWeb Flask server
+# Social Web API
+## Flask REST API for the Social Web project.
