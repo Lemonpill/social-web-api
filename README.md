@@ -3,4 +3,4 @@
 
 1. Create a virtual environment
 2. Install requirements
-3. Run wsgi.pu
+3. Run wsgi.py
