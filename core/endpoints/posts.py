@@ -16,7 +16,6 @@ from werkzeug.exceptions import NotFound, Forbidden
 from ..validation import schemas, helpers
 from ..models import Comment, Post
 from .. import db
-import time
 
 # Blueprint
 posts = Blueprint(name="posts", import_name=__name__, url_prefix="/posts")
@@ -48,8 +47,6 @@ def create(user, data):
 @pagination_required
 def get_all(offset, limit, user):
     """ Fetch all posts """
-
-    time.sleep(1.5)  # Debugging UI
     
     result = list()
 
@@ -64,8 +61,6 @@ def get_all(offset, limit, user):
 @bearer_required
 def view(user, post_id):
     """ Get post by UID """
-
-    time.sleep(1.5)  # Debugging UI
 
     # Search for post in DB
     post = Post.find_by_uid(post_id)
@@ -159,8 +154,6 @@ def comment(data, user, post_id):
 @pagination_required
 def comments(offset, limit, user, post_id):
     """ Get post comments """
-
-    time.sleep(1.5)  # Debugging UI
 
     # Fetch post from DB
     post = Post.find_by_uid(post_id)

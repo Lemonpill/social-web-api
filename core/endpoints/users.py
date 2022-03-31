@@ -15,7 +15,6 @@ from ..decorators import bearer_required, json_required, pagination_required
 from ..models import User
 from ..validation import schemas, helpers
 from .. import db
-import time
 
 
 # Blueprint
