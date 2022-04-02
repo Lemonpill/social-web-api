@@ -4,6 +4,7 @@ ORM for the app DB
 
 
 # Imports
+import random
 from datetime import datetime
 from flask import request
 import shortuuid
@@ -28,6 +29,8 @@ def uuid_gen(l):
     """
     return shortuuid.ShortUUID().random(length=l)
 
+def hex_gen():
+    return "#"+''.join([random.choice('0123456789ABCDEF') for i in range(6)])
 
 # Models
 class User(db.Model):
@@ -38,6 +41,7 @@ class User(db.Model):
     email = Column(String(50), unique=True)
     password = Column(String(100))
     display_name = Column(String(50))
+    color = Column(String(7))
     created = Column(DateTime, default=None)
     updated = Column(DateTime, default=None)
 
@@ -69,13 +73,14 @@ class User(db.Model):
 
         now = datetime.now()
         new = User(
-                uid=uuid_gen(16),
-                email=email.lower(),
-                password=generate_password_hash(pwd, "SHA256"),
-                display_name=display_name,
-                created=now,
-                updated=now
-            )
+            uid=uuid_gen(16),
+            email=email.lower(),
+            password=generate_password_hash(pwd, "SHA256"),
+            display_name=display_name,
+            color=hex_gen(),
+            created=now,
+            updated=now
+        )
         db.session.add(new)
         return new
 
@@ -86,6 +91,7 @@ class User(db.Model):
             "id": self.uid,
             "display_name": self.display_name,
             "email": self.email,
+            "color": self.color,
             "created": self.created,
             "updated": self.updated
         }
@@ -95,7 +101,8 @@ class User(db.Model):
 
         return {
             "id": self.uid,
-            "display_name": self.display_name
+            "display_name": self.display_name,
+            "color": self.color
         }
 
     def update(self, email, pwd, display_name):
@@ -172,7 +179,8 @@ class Post(db.Model):
             "comments": self.comments.count(),
             "owner": {
                 "id": self.owner.uid,
-                "display_name": self.owner.display_name
+                "display_name": self.owner.display_name,
+                "color": self.owner.color
             },
             "actions": actions
         }
@@ -194,7 +202,8 @@ class Post(db.Model):
             "href": f"{request.base_url}/{self.uid}",
             "owner": {
                 "id": self.owner.uid,
-                "display_name": self.owner.display_name
+                "display_name": self.owner.display_name,
+                "color": self.owner.color
             },
             "actions": actions
         }
@@ -286,7 +295,8 @@ class Comment(db.Model):
             "updated": self.updated,
             "owner": {
                 "id": self.owner.uid,
-                "display_name": self.owner.display_name
+                "display_name": self.owner.display_name,
+                "color": self.owner.color
             },
             "post_id": self.post.uid,
             "actions": actions
